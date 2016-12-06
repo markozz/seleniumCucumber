@@ -20,22 +20,22 @@ public class BrowserFactory {
     }
 
     @Before
-    public void beforeAfterAllHooks() {
+    public void beforeAfterSuiteHooks() {
         if (!running) {
             //beforeAll hook
-            beforeAll();
+            beforeSuite();
 
-            // afterAll hook
+            // afterSuite hook
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 public void run() {
-                    afterAll();
+                    afterSuite();
                 }
             });
             running = true;
         }
     }
 
-    private void beforeAll() {
+    private void beforeSuite() {
         Properties properties = new Properties();
         String browser = "";
         try {
@@ -52,11 +52,11 @@ public class BrowserFactory {
         } finally {
             switch (browser) {
                 case "chrome":
-                    System.setProperty("webdriver.chrome.driver", "./chromedriver.exe");
+                    System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
                     this.browser = new ChromeDriver();
                     break;
                 case "firefox":
-                    System.setProperty("webdriver.gecko.driver", "./geckodriver.exe");
+                    System.setProperty("webdriver.gecko.driver", "geckodriver.exe");
                     this.browser = new FirefoxDriver();
                     break;
                 default:
@@ -70,7 +70,7 @@ public class BrowserFactory {
 
     }
 
-    private void afterAll() {
+    private void afterSuite() {
         browser.quit();
     }
 }
